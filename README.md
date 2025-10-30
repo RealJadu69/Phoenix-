@@ -25,8 +25,6 @@ From essentials to dev tools and proot systems — build your perfect Termux in 
 Then run the following:
 
 ```bash
-pkg update -y && pkg upgrade -y
-pkg install git python -y
 git clone https://github.com/RealJadu69/phoenix
 cd phoenix
 bash setup.sh
