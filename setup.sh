@@ -4,8 +4,9 @@ set -euo pipefail
 # --- Paths ---
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_HOME="$HOME/.phoenix"
+
 ASSETS_SRC="$ROOT_DIR/assets"
-RES_SRC="$ROOT_DIR/resources"
+RES_SRC="$ASSETS_SRC/resources"   # Look inside assets now
 ASSETS_DST="$INSTALL_HOME/assets"
 RES_DST="$INSTALL_HOME/resources"
 
@@ -25,7 +26,7 @@ fi
 if [ -d "$RES_SRC" ]; then
     cp -a "$RES_SRC/." "$RES_DST/" || echo "[PHOENIX] Warning: Could not copy resources."
 else
-    echo "[PHOENIX] Warning: resources folder not found!"
+    echo "[PHOENIX] Warning: resources folder not found inside assets!"
 fi
 
 # --- Set executable permissions safely ---
@@ -39,7 +40,7 @@ if [ -d "$RES_DST" ]; then
     find "$RES_DST" -maxdepth 1 -type f -name "*.sh" -exec chmod +x {} \;
 fi
 
-# --- Update Termux and install dependencies ---
+# --- Install dependencies ---
 echo "[PHOENIX] Installing required packages..."
 pkg update -y
 pkg upgrade -y
