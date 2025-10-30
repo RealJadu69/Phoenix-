@@ -1,0 +1,15 @@
+{
+  "main_menu": [
+    "1. Basic Termux Setup (Recommended)",
+    "2. Install All Essentials (fast)",
+    "3. Developer Tools",
+    "4. Math & Science Tools",
+    "5. Network Utilities",
+    "6. Visual Tweaks & UX",
+    "7. Proot Distro (Debian)",
+    "8. Import LinuxDroid (optional)",
+    "9. Harden System (safe tweaks)",
+    "10. Modules List / Dry-run",
+    "11. Exit"
+  ]
+}
