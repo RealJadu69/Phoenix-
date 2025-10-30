@@ -1,34 +1,53 @@
-# Gradle files
-.gradle/
-build/
+# === Python ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.egg-info/
+.env
+.venv/
+env/
+venv/
+pip-wheel-metadata/
 
-# Local configuration file (sdk path, etc)
-local.properties
-
-# Log/OS Files
+# === Bash / Shell ===
+*.swp
+*.swo
 *.log
+*.bak
+*.tmp
+*.cache/
+*.tar
+*.zip
 
-# Android Studio generated files and folders
-captures/
-.externalNativeBuild/
-.cxx/
-*.aab
-*.apk
-output-metadata.json
+# === Termux / Linux temporary files ===
+.DS_Store
+.history
+termux.properties.bak
+bash_history
+*.lock
 
-# IntelliJ
-*.iml
-.idea/
-misc.xml
-deploymentTargetDropDown.xml
-render.experimental.xml
+# === System Files ===
+Thumbs.db
+ehthumbs.db
+desktop.ini
 
-# Keystore files
-*.jks
-*.keystore
+# === Repo build / output ===
+logs/
+output/
+dist/
+build/
+__build__/
 
-# Google Services (e.g. APIs or Firebase)
-google-services.json
+# === Phoenix specific ===
+resources/temp/
+resources/backups/
+utils/logs/
 
-# Android Profiling
-*.hprof
+# === Misc ===
+# Ignore anything you might dump or download for testing
+test/
+downloads/
+temp/
+tmp/
