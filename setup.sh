@@ -1,47 +1,61 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# --- Determine repo root ---
-# If running inside cloned repo, use current folder
+# --- Paths ---
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-# --- Source & destination folders ---
+INSTALL_HOME="$HOME/.phoenix"
 ASSETS_SRC="$ROOT_DIR/assets"
 RES_SRC="$ROOT_DIR/resources"
-INSTALL_HOME="$HOME/.phoenix"
 ASSETS_DST="$INSTALL_HOME/assets"
 RES_DST="$INSTALL_HOME/resources"
 
-# --- Create directories ---
-mkdir -p "$ASSETS_DST" "$RES_DST"
+echo "[PHOENIX] Preparing installation..."
 
-# --- Check & copy safely ---
+# --- Create destination folders ---
+mkdir -p "$ASSETS_DST" "$RES_DST"
+mkdir -p "$RES_DST/utils" "$RES_DST/groups"
+
+# --- Copy safely ---
 if [ -d "$ASSETS_SRC" ]; then
-    cp -a "$ASSETS_SRC/." "$ASSETS_DST/"
+    cp -a "$ASSETS_SRC/." "$ASSETS_DST/" || echo "[PHOENIX] Warning: Could not copy assets."
 else
-    echo "[PHOENIX] Warning: assets folder not found at $ASSETS_SRC"
+    echo "[PHOENIX] Warning: assets folder not found!"
 fi
 
 if [ -d "$RES_SRC" ]; then
-    cp -a "$RES_SRC/." "$RES_DST/"
+    cp -a "$RES_SRC/." "$RES_DST/" || echo "[PHOENIX] Warning: Could not copy resources."
 else
-    echo "[PHOENIX] Warning: resources folder not found at $RES_SRC"
+    echo "[PHOENIX] Warning: resources folder not found!"
 fi
 
-# --- Install dependencies ---
+# --- Set executable permissions safely ---
+if [ -d "$RES_DST/utils" ]; then
+    find "$RES_DST/utils" -type f -name "*.sh" -exec chmod +x {} \;
+fi
+if [ -d "$RES_DST/groups" ]; then
+    find "$RES_DST/groups" -type f -name "*.sh" -exec chmod +x {} \;
+fi
+if [ -d "$RES_DST" ]; then
+    find "$RES_DST" -maxdepth 1 -type f -name "*.sh" -exec chmod +x {} \;
+fi
+
+# --- Update Termux and install dependencies ---
+echo "[PHOENIX] Installing required packages..."
 pkg update -y
 pkg upgrade -y
 pkg install -y git python nodejs proot-distro curl wget dialog
 
-# --- Termux storage ---
+# --- Termux storage permission ---
 if [ ! -d "$HOME/storage" ]; then
+    echo "[PHOENIX] Requesting storage permission..."
     termux-setup-storage || true
 fi
 
-# --- Permissions for scripts ---
-chmod +x "$RES_DST"/utils/*.sh
-chmod +x "$RES_DST"/*.sh
-chmod +x "$RES_DST"/groups/*.sh
-
 # --- Launch menu ---
-python3 "$RES_DST/MenuHandler.py" "$INSTALL_HOME"
+MENU_SCRIPT="$RES_DST/MenuHandler.py"
+if [ -f "$MENU_SCRIPT" ]; then
+    python3 "$MENU_SCRIPT" "$INSTALL_HOME"
+else
+    echo "[PHOENIX] Error: MenuHandler.py not found in $RES_DST"
+    exit 1
+fi
