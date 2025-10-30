@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -e
+set -u
+set -o pipefail
+
+
 
 # --- Paths ---
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
